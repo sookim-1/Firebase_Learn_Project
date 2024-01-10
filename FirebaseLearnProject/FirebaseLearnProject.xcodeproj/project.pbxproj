@@ -48,6 +48,7 @@
 		764B9F1E2B4E60B600697C58 /* PushViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764B9F1D2B4E60B600697C58 /* PushViewController.swift */; };
 		764B9F212B4E620C00697C58 /* LocalPushViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764B9F202B4E620C00697C58 /* LocalPushViewController.swift */; };
 		764B9F232B4E621500697C58 /* ServerPushViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764B9F222B4E621500697C58 /* ServerPushViewController.swift */; };
+		764B9F252B4E6A8C00697C58 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 764B9F242B4E6A8C00697C58 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +64,7 @@
 		764B9F1D2B4E60B600697C58 /* PushViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushViewController.swift; sourceTree = "<group>"; };
 		764B9F202B4E620C00697C58 /* LocalPushViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalPushViewController.swift; sourceTree = "<group>"; };
 		764B9F222B4E621500697C58 /* ServerPushViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerPushViewController.swift; sourceTree = "<group>"; };
+		764B9F242B4E6A8C00697C58 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 		764B9EBC2B4E5C1E00697C58 /* FirebaseLearnProject */ = {
 			isa = PBXGroup;
 			children = (
+				764B9F242B4E6A8C00697C58 /* GoogleService-Info.plist */,
 				764B9F1C2B4E607200697C58 /* Models */,
 				764B9F1B2B4E603000697C58 /* CustomTableViewCells */,
 				764B9F1A2B4E602900697C58 /* CustomViews */,
@@ -272,6 +275,7 @@
 			files = (
 				764B9ECA2B4E5C2000697C58 /* LaunchScreen.storyboard in Resources */,
 				764B9EC72B4E5C2000697C58 /* Assets.xcassets in Resources */,
+				764B9F252B4E6A8C00697C58 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
