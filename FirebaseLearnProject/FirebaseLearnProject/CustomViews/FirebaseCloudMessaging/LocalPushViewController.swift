@@ -63,19 +63,25 @@ class LocalPushViewController: UIViewController {
     }
 
     @objc private func requestNoti() {
+        // 컨텐츠 생성
         let content = UNMutableNotificationContent()
         content.title = "노티 (타이틀)"
         content.body = "노티 (바디)"
+        content.badge = 1
+
+        // 사운드 옵션
         content.sound = .default
-        content.badge = 20
+
+        // 트리거 생성 - 0초로 설정시 오류
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
+
+        // pushID가 같은 경우 다시보내면 덮어씌어지고 pushID가 다른 경우 보내면 새로운 push생성
+        let pushID = "Local Noti Test"
 
         let request = UNNotificationRequest(
-            identifier: "local noti",
+            identifier: pushID,
             content: content,
-            trigger: UNTimeIntervalNotificationTrigger(
-                timeInterval: 2,
-                repeats: false
-            )
+            trigger: trigger
         )
 
         UNUserNotificationCenter.current()
