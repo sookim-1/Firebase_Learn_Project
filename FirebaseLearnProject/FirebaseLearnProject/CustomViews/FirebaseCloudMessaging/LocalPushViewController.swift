@@ -55,13 +55,13 @@ class LocalPushViewController: UIViewController {
         // sound - 소리
         // badge - 빨간색 동그라미 숫자
         UNUserNotificationCenter.current().requestAuthorization(
-          options: [.alert, .sound, .badge],
-          completionHandler: { (granted, error) in
-            print("granted notification, \(granted)")
-          }
+            options: [.alert, .sound, .badge],
+            completionHandler: { (granted, error) in
+                print("granted notification, \(granted)")
+            }
         )
     }
-
+    
     @objc private func requestNoti() {
         // 컨텐츠 생성
         let content = UNMutableNotificationContent()

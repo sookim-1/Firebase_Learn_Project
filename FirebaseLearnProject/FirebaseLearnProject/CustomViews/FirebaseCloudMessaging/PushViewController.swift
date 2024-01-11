@@ -19,7 +19,7 @@ class PushViewController: UIViewController {
     }
 
     private let models: [CustomTableViewModel] = [CustomTableViewModel(title: "로컬 알림(Local Push)"),
-                                                               CustomTableViewModel(title: "원격 알림(APNs Push)")]
+                                                  CustomTableViewModel(title: "원격 알림(APNs Push)")]
 
     override func viewDidLoad() {
         super.viewDidLoad()
