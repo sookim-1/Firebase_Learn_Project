@@ -11,7 +11,7 @@ class LocalPushViewController: UIViewController {
 
     lazy private var permissionButton = UIButton().then {
         $0.backgroundColor = .systemGray5
-        $0.setTitle("알림권한", for: .normal)
+        $0.setTitle("알림권한 요청", for: .normal)
         $0.setTitleColor(.systemBlue, for: .normal)
         $0.setTitleColor(.systemRed, for: .highlighted)
         $0.addTarget(self, action: #selector(touchedPermissionButton), for: .touchUpInside)
@@ -57,7 +57,13 @@ class LocalPushViewController: UIViewController {
         UNUserNotificationCenter.current().requestAuthorization(
             options: [.alert, .sound, .badge],
             completionHandler: { (granted, error) in
-                print("granted notification, \(granted)")
+                DispatchQueue.main.async {
+                    if granted {
+                        FirebaseUtility.shared.showToast(view: self.view, "알림권한이 허용되었습니다.", withDuration: 1, delay: 1)
+                    } else {
+                        FirebaseUtility.shared.loadAppSetting()
+                    }
+                }
             }
         )
     }
