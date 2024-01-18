@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7605A6052B58DF7E002DD2C3 /* FirebaseUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7605A6042B58DF7E002DD2C3 /* FirebaseUtility.swift */; };
 		7605A6072B58E011002DD2C3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7605A6062B58E011002DD2C3 /* GoogleService-Info.plist */; };
+		7605A60A2B58E2B1002DD2C3 /* CrashlyticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7605A6092B58E2B1002DD2C3 /* CrashlyticsViewController.swift */; };
 		764B9EBE2B4E5C1E00697C58 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764B9EBD2B4E5C1E00697C58 /* AppDelegate.swift */; };
 		764B9EC02B4E5C1E00697C58 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764B9EBF2B4E5C1E00697C58 /* SceneDelegate.swift */; };
 		764B9EC22B4E5C1E00697C58 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764B9EC12B4E5C1E00697C58 /* HomeViewController.swift */; };
@@ -55,6 +56,7 @@
 /* Begin PBXFileReference section */
 		7605A6042B58DF7E002DD2C3 /* FirebaseUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUtility.swift; sourceTree = "<group>"; };
 		7605A6062B58E011002DD2C3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7605A6092B58E2B1002DD2C3 /* CrashlyticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashlyticsViewController.swift; sourceTree = "<group>"; };
 		764B9EBA2B4E5C1E00697C58 /* FirebaseLearnProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirebaseLearnProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		764B9EBD2B4E5C1E00697C58 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		764B9EBF2B4E5C1E00697C58 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -120,6 +122,14 @@
 			path = Utility;
 			sourceTree = "<group>";
 		};
+		7605A6082B58E29B002DD2C3 /* FirebaseCrashlytics */ = {
+			isa = PBXGroup;
+			children = (
+				7605A6092B58E2B1002DD2C3 /* CrashlyticsViewController.swift */,
+			);
+			path = FirebaseCrashlytics;
+			sourceTree = "<group>";
+		};
 		764B9EB12B4E5C1E00697C58 = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +167,7 @@
 		764B9F1A2B4E602900697C58 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				7605A6082B58E29B002DD2C3 /* FirebaseCrashlytics */,
 				764B9F1F2B4E61F000697C58 /* FirebaseCloudMessaging */,
 				764B9EC12B4E5C1E00697C58 /* HomeViewController.swift */,
 			);
@@ -199,6 +210,7 @@
 				764B9EB62B4E5C1E00697C58 /* Sources */,
 				764B9EB72B4E5C1E00697C58 /* Frameworks */,
 				764B9EB82B4E5C1E00697C58 /* Resources */,
+				7605A60B2B58E3DA002DD2C3 /* FirebaseCrashlytics */,
 			);
 			buildRules = (
 			);
@@ -294,6 +306,32 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		7605A60B2B58E3DA002DD2C3 /* FirebaseCrashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = FirebaseCrashlytics;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		764B9EB62B4E5C1E00697C58 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -303,6 +341,7 @@
 				764B9F192B4E5E4200697C58 /* TitleTableViewCell.swift in Sources */,
 				7605A6052B58DF7E002DD2C3 /* FirebaseUtility.swift in Sources */,
 				764B9F1E2B4E60B600697C58 /* PushViewController.swift in Sources */,
+				7605A60A2B58E2B1002DD2C3 /* CrashlyticsViewController.swift in Sources */,
 				764B9F212B4E620C00697C58 /* LocalPushViewController.swift in Sources */,
 				764B9EBE2B4E5C1E00697C58 /* AppDelegate.swift in Sources */,
 				764B9EC02B4E5C1E00697C58 /* SceneDelegate.swift in Sources */,
@@ -359,7 +398,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
