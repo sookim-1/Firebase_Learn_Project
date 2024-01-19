@@ -55,7 +55,7 @@ fabric.properties
 **/node_modules/*
 **/.firebaserc
 *GoogleService-Info.plist
-
+*GoogleService-Info-Debug.plist
 ### Firebase Patch ###
 .runtimeconfig.json
 .firebase/

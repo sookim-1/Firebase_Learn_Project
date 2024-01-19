@@ -18,7 +18,8 @@ class HomeViewController: UIViewController {
         self.view.addSubview($0)
     }
 
-    private let models: [CustomTableViewModel] = [CustomTableViewModel(title: "FCM(Firebase Cloud Messaging)")]
+    private let models: [CustomTableViewModel] = [CustomTableViewModel(title: "Firebase Cloud Messaging(FCM)"),
+                                                  CustomTableViewModel(title: "Firebase Crashlytics")]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +55,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         switch indexPath.row {
         case 0:
             self.pushToPushViewController()
+        case 1:
+            self.pushToCrashlyticsViewController()
         default:
             print("클릭")
         }
@@ -69,6 +72,11 @@ extension HomeViewController {
 
     private func pushToPushViewController() {
         let vc = PushViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+
+    private func pushToCrashlyticsViewController() {
+        let vc = CrashlyticsViewController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
 
