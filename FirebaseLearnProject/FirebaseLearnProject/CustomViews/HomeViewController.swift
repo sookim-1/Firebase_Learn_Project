@@ -19,7 +19,8 @@ class HomeViewController: UIViewController {
     }
 
     private let models: [CustomTableViewModel] = [CustomTableViewModel(title: "Firebase Cloud Messaging(FCM)"),
-                                                  CustomTableViewModel(title: "Firebase Crashlytics")]
+                                                  CustomTableViewModel(title: "Firebase Crashlytics"),
+                                                  CustomTableViewModel(title: "FireStore")]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +58,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             self.pushToPushViewController()
         case 1:
             self.pushToCrashlyticsViewController()
+        case 2:
+            self.pushToFireStoreViewController()
         default:
             print("클릭")
         }
@@ -77,6 +80,11 @@ extension HomeViewController {
 
     private func pushToCrashlyticsViewController() {
         let vc = CrashlyticsViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+
+    private func pushToFireStoreViewController() {
+        let vc = FireStoreViewController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
 
