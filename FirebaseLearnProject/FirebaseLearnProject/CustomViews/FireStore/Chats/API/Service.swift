@@ -13,7 +13,8 @@ struct Service {
     
     static func fetchUsers(completion: @escaping ([User]) -> Void) {
         COLLECTION_USERS.getDocuments { (snapshot, error) in
-            guard var users = snapshot?.documents.map({ User(dictionary: $0.data() )}) else { return }
+            guard var users = snapshot?.documents.map({ User(dictionary: $0.data() )}) 
+            else { return }
             
             // find index which is not equal index of current user
             
@@ -27,7 +28,9 @@ struct Service {
     
     static func fetchUser(withUID uid: String, completion: @escaping(User) -> Void) {
         COLLECTION_USERS.document(uid).getDocument { (snapshot, error) in
-            guard let dictionary = snapshot?.data() else { return }
+            guard let dictionary = snapshot?.data() 
+            else { return }
+            
             let user = User(dictionary: dictionary)
             completion(user)
         }
@@ -36,7 +39,8 @@ struct Service {
     static func fetchMessages(forUser user: User, completion: @escaping ([Message]) -> Void) {
         var messages = [Message]()
         
-        guard let currentUID = Auth.auth().currentUser?.uid else { return }
+        guard let currentUID = Auth.auth().currentUser?.uid 
+        else { return }
         
         // fetch all recent messages
         let query = COLLECTION_MESSAGES.document(currentUID).collection(user.uid).order(by: "timeStamp")
@@ -56,7 +60,8 @@ struct Service {
         
     static func fetchConversations(completion: @escaping (([Conversation]) -> Void)) {
         var conversations = [Conversation]()
-        guard let currentUID = Auth.auth().currentUser?.uid 
+        
+        guard let currentUID = Auth.auth().currentUser?.uid
         else { return }
 
         let query = COLLECTION_MESSAGES.document(currentUID).collection("recent-messages").order(by: "timeStamp")
@@ -77,7 +82,8 @@ struct Service {
     }
     
     static func uploadMessage(_ message: String, to user: User, completion: ((Error?) -> Void)?) {
-        guard let currentUID = Auth.auth().currentUser?.uid else { return }
+        guard let currentUID = Auth.auth().currentUser?.uid 
+        else { return }
         
         let data = ["text": message,
                     "fromId": currentUID,

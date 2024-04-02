@@ -23,9 +23,9 @@ final class ProfileController: UITableViewController {
     // use delegate chaining
     weak var delegate: ProfileControllerDelegate?
     
-    private lazy var headerView = ProfileHeaderView(frame: .init(x: 0, y: 0,
-                                                                 width: view.frame.width,
-                                                                 height: 380))
+    private lazy var headerView = ProfileHeaderView(frame: CGRect(origin: .zero, size: CGSize(width: view.frame.width,
+                                                                                              height: 380)))
+    
     private let footerView = ProfileFooterView()
 
     override func viewDidLoad() {
@@ -42,8 +42,6 @@ final class ProfileController: UITableViewController {
         navigationController?.navigationBar.barStyle = .black
     }
     
-    //MARK: - API
-    
     private func fetchUser() {
          // showLoader(true)
         
@@ -59,24 +57,20 @@ final class ProfileController: UITableViewController {
         }
     }
     
-    //MARK: - Helpers
-    
     private func configureUI() {
-        tableView.backgroundColor = .white
-        
         headerView.delegate = self
         tableView.tableHeaderView = headerView
         tableView.register(ProfileCell.self, forCellReuseIdentifier: ProfileCell.reuseID)
         tableView.contentInsetAdjustmentBehavior = .never
         tableView.rowHeight = 64
-        tableView.backgroundColor = .systemGroupedBackground
+        tableView.backgroundColor = .systemPurple
         
         // use delegate chaining
         footerView.delegate = self
-        footerView.frame = .init(x: 0, y: 0, width: view.frame.width, height: 100)
+        footerView.frame = .init(origin: .zero, size: CGSize(width: view.frame.width, height: 100))
         tableView.tableFooterView = footerView
-        
     }
+    
 }
 
     
@@ -88,7 +82,6 @@ extension ProfileController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: ProfileCell.reuseID, for: indexPath) as! ProfileCell
 
         let viewModel = ProfileViewModel(rawValue: indexPath.row)
@@ -98,6 +91,7 @@ extension ProfileController {
         
         return cell
     }
+    
 }
     
 //MARK: - UITableViewDelegate
@@ -119,6 +113,7 @@ extension ProfileController {
         // add some padding on top
         return UIView()
     }
+    
 }
     
 //MARK: - ProfileHeaderViewDelegate
@@ -127,22 +122,25 @@ extension ProfileController: ProfileHeaderViewDelegate {
     func dismissController() {
         dismiss(animated: true)
     }
+    
 }
 
 //MARK: - ProfileFooterViewDelegate
 extension ProfileController: ProfileFooterViewDelegate {
+    
     // use delegate chaining
     func handleLogout() {
-        let alertController = UIAlertController(title: nil, message: "Are you sure you want to logout?", preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: nil, message: "로그아웃을 하시겠습니까?", preferredStyle: .actionSheet)
 
-        alertController.addAction(UIAlertAction(title: "Log out", style: .destructive, handler: { (_) in
+        alertController.addAction(UIAlertAction(title: "확인", style: .destructive, handler: { (_) in
             self.dismiss(animated: true) {
                 self.delegate?.handleLogout()
             }
         }))
         
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alertController.addAction(UIAlertAction(title: "취소", style: .cancel))
         
         present(alertController, animated: true)
     }
+    
 }

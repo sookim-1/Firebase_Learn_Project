@@ -8,106 +8,111 @@
 import UIKit
 import FirebaseAuth
 import FirebaseFirestore
+import SnapKit
+import Then
  
-
-class RegisterController: UIViewController {
-    
-    //MARK: - Properties
+final class RegisterController: UIViewController {
     
     private var viewModel = RegisterViewModel()
     private var profileImage: UIImage?
     
     weak var delegate: AuthenticationDelegate?
     
-    private let plusPhotoButton: UIButton = {
-        let button = UIButton(type: .system)
-        let image = UIImage(named: "plus_photo")
-        button.setImage(image, for: .normal)
-        button.tintColor = .white
-        button.imageView?.contentMode = .scaleAspectFill
-        button.addTarget(self, action: #selector(handleSelectPhoto), for: .touchUpInside)
-        return button
-    }()
+    private lazy var stackView = UIStackView(arrangedSubviews: [emailContainerView, fullNameContainerView, userNameContainerView, passwordContainerView, signUpButton]).then {
+        $0.axis = .vertical
+        $0.spacing = 16
+    }
     
-    private lazy var emailContainerView: UIView = {
-        return InputContainerView(image: UIImage(systemName: "envelope"),
-        textField: emailTextField)
-    }()
+    private lazy var plusPhotoButton = UIButton(type: .system).then {
+        let image = UIImage(resource: .plusPhoto)
+        $0.setImage(image, for: .normal)
+        $0.tintColor = .white
+        $0.imageView?.contentMode = .scaleAspectFill
+        $0.addTarget(self, action: #selector(handleSelectPhoto), for: .touchUpInside)
+    }
     
-    private lazy var fullNameContainerView: UIView = {
-        return InputContainerView(image: UIImage(named: "user"),
-        textField: fullNameTextField)
-    }()
+    private lazy var emailContainerView = InputContainerView(image: UIImage(systemName: "envelope"), textField: emailTextField)
     
-    private lazy var userNameContainerView: UIView = {
-        return InputContainerView(image: UIImage(named: "user"),
-        textField: userNameTextField)
-    }()
+    private lazy var fullNameContainerView = InputContainerView(image: UIImage(systemName: "person.fill"), textField: fullNameTextField)
     
-    private lazy var passwordContainerView: InputContainerView = {
-        return InputContainerView(image: UIImage(systemName: "lock"),
-                                               textField: passwordTextField)
-    }()
+    private lazy var userNameContainerView = InputContainerView(image: UIImage(systemName: "person.fill"), textField: userNameTextField)
     
-    private let emailTextField: CustomTextField = {
-        return CustomTextField(placeholder: "Email", secure: false)
-    }()
+    private lazy var passwordContainerView = InputContainerView(image: UIImage(systemName: "lock"), textField: passwordTextField)
     
-    private let fullNameTextField: CustomTextField = {
-        return CustomTextField(placeholder: "Full Name", secure: false)
-    }()
+    private lazy var emailTextField = CustomTextField(placeholder: "이메일", secure: false)
     
-    private let userNameTextField: CustomTextField = {
-        return CustomTextField(placeholder: "User Name", secure: false)
-    }()
+    private lazy var fullNameTextField = CustomTextField(placeholder: "닉네임", secure: false)
+    
+    private lazy var userNameTextField = CustomTextField(placeholder: "이름", secure: false)
     
     
-    private let passwordTextField: CustomTextField = {
-        return CustomTextField(placeholder: "Password", secure: true)
-    }()
+    private lazy var passwordTextField = CustomTextField(placeholder: "비밀번호", secure: true)
     
-    private let signUpButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
-        button.setTitle("Sign Up", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 5
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        button.setHeight(height: 50)
-        button.isEnabled = false
-        button.addTarget(self, action: #selector(handleRegistration), for: .touchUpInside)
-        return button
-    }()
+    private lazy var signUpButton = UIButton(type: .system).then {
+        $0.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
+        $0.setTitle("회원가입", for: .normal)
+        $0.setTitleColor(.white, for: .normal)
+        $0.layer.cornerRadius = 5
+        $0.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        $0.isEnabled = false
+        $0.addTarget(self, action: #selector(handleRegistration), for: .touchUpInside)
+    }
     
-    private let alreadyHaveAnAccount: UIButton = {
-        let button = UIButton(type: .system)
-        
-        let attributedTitle = NSMutableAttributedString(string: "Already have an account? ",
+    private lazy var alreadyHaveAnAccount = UIButton(type: .system).then {
+        let attributedTitle = NSMutableAttributedString(string: "이미 계정이 있나요? ",
                                                         attributes: [.font : UIFont.systemFont(ofSize: 16),
                                                                      .foregroundColor: UIColor.white])
         
-        attributedTitle.append(NSAttributedString(string: "Sign In",
+        attributedTitle.append(NSAttributedString(string: "로그인",
                                                   attributes: [.font : UIFont.boldSystemFont(ofSize: 16),
                                                                .foregroundColor: UIColor.white]))
         
-        button.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
         
-        button.setAttributedTitle(attributedTitle, for: .normal)
-        
-        return button
-    }()
-    
-    
-    //MARK: - Lifecycle
+        $0.setAttributedTitle(attributedTitle, for: .normal)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureUI()
+        configureGradientLayer()
+        addSubviews()
+        setupConstraints()
         configureNotificationObservers()
     }
     
-    //MARK: - Selectors
+    private func addSubviews() {
+        [plusPhotoButton,
+        stackView,
+         alreadyHaveAnAccount].forEach {
+            self.view.addSubview($0)
+        }
+    }
+    
+    private func setupConstraints() {
+        plusPhotoButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(32)
+            make.width.equalTo(200)
+            make.height.equalTo(200)
+        }
+        
+        stackView.snp.makeConstraints { make in
+            make.top.equalTo(plusPhotoButton.snp.bottom).offset(32)
+            make.leading.equalToSuperview().offset(32)
+            make.trailing.equalToSuperview().offset(-32)
+        }
+        
+        alreadyHaveAnAccount.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(32)
+            make.trailing.equalToSuperview().offset(-32)
+            make.bottom.equalToSuperview().offset(-35)
+        }
+        
+        signUpButton.snp.makeConstraints { make in
+            make.height.equalTo(50)
+        }
+    }
     
     @objc func handleRegistration() {
         guard
@@ -124,7 +129,7 @@ class RegisterController: UIViewController {
                                                  username: username,
                                                  profileImage: profileImage)
         
-        showLoader(true, withText: "Registering...")
+        showLoader(true, withText: "등록 중...")
             
         AuthService.shared.createUser(credentials: credentials) { (error) in
             if let error = error {
@@ -173,41 +178,6 @@ class RegisterController: UIViewController {
         }
     }
     
-    //MARK: - Helpers
-    
-    private func configureUI() {
-        configureGradientLayer()
-        
-        view.addSubview(plusPhotoButton)
-        // activate programmatic autolayout
-        
-        plusPhotoButton.centerX(inView: view)
-        plusPhotoButton.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-                         paddingTop: 32,
-                         width: 200,
-                         height: 200)
-        
-        let stack = UIStackView(arrangedSubviews: [emailContainerView, fullNameContainerView, userNameContainerView, passwordContainerView, signUpButton])
-        stack.axis = .vertical
-        stack.spacing = 16
-        
-        view.addSubview(stack)
-        stack.anchor(top: plusPhotoButton.bottomAnchor,
-                     left: view.leftAnchor,
-                     right: view.rightAnchor,
-                     paddingTop: 32,
-                     paddingLeft: 32,
-                     paddingRight: 32)
-        
-        view.addSubview(alreadyHaveAnAccount)
-        alreadyHaveAnAccount.anchor(left: view.leftAnchor,
-                                       bottom: view.bottomAnchor,
-                                       right: view.rightAnchor,
-                                       paddingLeft: 32,
-                                       paddingBottom: 35,
-                                       paddingRight: 32)
-    }
-    
     private func configureNotificationObservers() {
         emailTextField.addTarget(self, action: #selector(textDidChange(sender:)), for: .editingChanged)
         fullNameTextField.addTarget(self, action: #selector(textDidChange(sender:)), for: .editingChanged)
@@ -220,7 +190,6 @@ class RegisterController: UIViewController {
 }
 
 //MARK: - UIImagePickerControllerDelegate
-
 extension RegisterController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
@@ -237,8 +206,8 @@ extension RegisterController: UIImagePickerControllerDelegate, UINavigationContr
     }
 }
 
-    //MARK: - AuthenticationControllerProtocol
-
+    
+//MARK: - AuthenticationControllerProtocol
 extension RegisterController: AuthenticationControllerProtocol {
 
         func checkFormStatus() {
@@ -251,6 +220,3 @@ extension RegisterController: AuthenticationControllerProtocol {
             }
         }
 }
-
-//MARK: - AuthenticationControllerProtocol
-

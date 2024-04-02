@@ -58,7 +58,9 @@ final class ProfileHeaderView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        configureUI()
+        addSubviews()
+        setupConstraints()
+        configureGradientLayer()
     }
     
     required init?(coder: NSCoder) {
@@ -67,11 +69,6 @@ final class ProfileHeaderView: UIView {
 
     @objc func handleDismiss() {
         delegate?.dismissController()
-    }
-
-    private func configureUI() {
-        configureGradientLayer()
-
     }
 
     private func addSubviews() {

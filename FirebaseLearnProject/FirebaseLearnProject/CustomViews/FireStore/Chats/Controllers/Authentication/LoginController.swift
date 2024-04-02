@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import SnapKit
+import Then
 
 protocol AuthenticationControllerProtocol {
     func checkFormStatus()
@@ -15,79 +17,111 @@ protocol AuthenticationDelegate: AnyObject {
     func authenticationComplete()
 }
 
-class LoginController: UIViewController {
-    
-    //MARK: - Properties
+final class LoginController: UIViewController {
     
     private var viewModel = LoginViewModel()
     
     weak var delegate: AuthenticationDelegate?
     
-    private let iconImage: UIImageView = {
-        let iv = UIImageView()
-        iv.image = UIImage(systemName: "bubble.right")
-        iv.tintColor = .white
-        return iv
-    }()
+    private lazy var iconImage = UIImageView().then {
+        $0.image = UIImage(systemName: "bubble.right")
+        $0.tintColor = .white
+    }
     
-    private lazy var emailContainerView: UIView = {
-        return InputContainerView(image: UIImage(systemName: "envelope"),
-        textField: emailTextField)
-    }()
+    private lazy var stackView = UIStackView(arrangedSubviews: [emailContainerView, passwordContainerView, loginButton, homeButton]).then {
+        $0.axis = .vertical
+        $0.spacing = 16
+    }
     
-    private lazy var passwordContainerView: InputContainerView = {
-        return InputContainerView(image: UIImage(systemName: "lock"),
-                                               textField: passwordTextField)
-    }()
+    private lazy var emailContainerView = InputContainerView(image: UIImage(systemName: "envelope"), textField: emailTextField)
     
-    private let loginButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
-        button.setTitle("Log In", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 5
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        button.setHeight(height: 50)
-        button.isEnabled = false
-        button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
-        return button
-    }()
+    private lazy var passwordContainerView = InputContainerView(image: UIImage(systemName: "lock"), textField: passwordTextField)
     
-    private let emailTextField: CustomTextField = {
-        return CustomTextField(placeholder: "Email", secure: false)
-    }()
+    private lazy var loginButton = UIButton(type: .system).then {
+        $0.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
+        $0.setTitle("로그인", for: .normal)
+        $0.setTitleColor(.white, for: .normal)
+        $0.layer.cornerRadius = 5
+        $0.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        $0.isEnabled = false
+        $0.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
+    }
     
-    private let passwordTextField: CustomTextField = {
-        return CustomTextField(placeholder: "Password", secure: true)
-    }()
+    private lazy var homeButton = UIButton(type: .system).then {
+        $0.backgroundColor = .systemBlue
+        $0.setTitle("홈으로 이동", for: .normal)
+        $0.setTitleColor(.white, for: .normal)
+        $0.layer.cornerRadius = 5
+        $0.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        $0.addTarget(self, action: #selector(handleHome), for: .touchUpInside)
+    }
     
-    private let dontHaveAnAccountButton: UIButton = {
-        let button = UIButton(type: .system)
-        
-        let attributedTitle = NSMutableAttributedString(string: "Don't have an account? ",
+    private lazy var emailTextField = CustomTextField(placeholder: "이메일", secure: false).then {
+        $0.addTarget(self, action: #selector(textDidChange(sender:)), for: .editingChanged)
+    }
+    
+    private lazy var passwordTextField = CustomTextField(placeholder: "비밀번호", secure: true).then {
+        $0.addTarget(self, action: #selector(textDidChange(sender:)), for: .editingChanged)
+    }
+    
+    private lazy var dontHaveAnAccountButton = UIButton(type: .system).then {
+        let attributedTitle = NSMutableAttributedString(string: "계정이 없나요? ",
                                                         attributes: [.font : UIFont.systemFont(ofSize: 16),
                                                                      .foregroundColor: UIColor.white])
         
-        attributedTitle.append(NSAttributedString(string: "Sign Up",
+        attributedTitle.append(NSAttributedString(string: "회원가입",
                                                   attributes: [.font : UIFont.boldSystemFont(ofSize: 16),
                                                                .foregroundColor: UIColor.white]))
         
-        button.addTarget(self, action: #selector(handleShowSignUp), for: .touchUpInside)
-        
-        button.setAttributedTitle(attributedTitle, for: .normal)
-        
-        return button
-    }()
-    
-    //MARK: - Lifecycle
+        $0.addTarget(self, action: #selector(handleShowSignUp), for: .touchUpInside)
+        $0.setAttributedTitle(attributedTitle, for: .normal)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureGradientLayer()
+        addSubviews()
+        setupConstraints()
         configureUI()
     }
     
-    //MARK: - Selectors
+    private func addSubviews() {
+        [iconImage,
+        stackView,
+         dontHaveAnAccountButton].forEach {
+            self.view.addSubview($0)
+        }
+    }
+    
+    private func setupConstraints() {
+        iconImage.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(32)
+            make.width.equalTo(120)
+            make.height.equalTo(120)
+        }
+        
+        stackView.snp.makeConstraints { make in
+            make.top.equalTo(iconImage.snp.bottom).offset(32)
+            make.leading.equalToSuperview().offset(32)
+            make.trailing.equalToSuperview().offset(-32)
+        }
+        
+        dontHaveAnAccountButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(32)
+            make.trailing.equalToSuperview().offset(-32)
+            make.bottom.equalToSuperview().offset(-35)
+        }
+        
+        loginButton.snp.makeConstraints { make in
+            make.height.equalTo(50)
+        }
+        
+        homeButton.snp.makeConstraints { make in
+            make.height.equalTo(50)
+        }
+    }
     
     @objc func handleLogin() {
         guard
@@ -95,10 +129,11 @@ class LoginController: UIViewController {
             let password = passwordTextField.text
             else { return }
         
-       showLoader(true, withText: "Loggin in")
+       showLoader(true, withText: "로그인 중")
         
         AuthService.shared.logUserIn(withEmail: email, password: password) { [weak self] (result, error) in
-            guard let self = self else { return }
+            guard let self 
+            else { return }
             
             if let error = error {
                 self.showLoader(false)
@@ -108,6 +143,12 @@ class LoginController: UIViewController {
             
             self.showLoader(false)
             self.delegate?.authenticationComplete()
+        }
+    }
+    
+    @objc func handleHome() {
+        self.dismiss(animated: true) {
+            self.navigationController?.popToRootViewController(animated: true)
         }
     }
     
@@ -127,50 +168,14 @@ class LoginController: UIViewController {
         checkFormStatus()
     }
     
-    //MARK: - Helpers
-    
     private func configureUI() {
         navigationController?.navigationBar.isHidden = true
         navigationController?.navigationBar.barStyle = .black
-
-        configureGradientLayer()
-        
-        view.addSubview(iconImage)
-        // activate programmatic autolayout
-        
-        iconImage.centerX(inView: view)
-        iconImage.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-                         paddingTop: 32,
-                         width: 120,
-                         height: 120)
-        
-        let stack = UIStackView(arrangedSubviews: [emailContainerView, passwordContainerView, loginButton])
-        stack.axis = .vertical
-        stack.spacing = 16
-        
-        view.addSubview(stack)
-        stack.anchor(top: iconImage.bottomAnchor,
-                     left: view.leftAnchor,
-                     right: view.rightAnchor,
-                     paddingTop: 32,
-                     paddingLeft: 32,
-                     paddingRight: 32)
-        
-        view.addSubview(dontHaveAnAccountButton)
-        dontHaveAnAccountButton.anchor(left: view.leftAnchor,
-                                       bottom: view.bottomAnchor,
-                                       right: view.rightAnchor,
-                                       paddingLeft: 32,
-                                       paddingBottom: 35,
-                                       paddingRight: 32)
-        
-        emailTextField.addTarget(self, action: #selector(textDidChange(sender:)), for: .editingChanged)
-        passwordTextField.addTarget(self, action: #selector(textDidChange(sender:)), for: .editingChanged)
     }
-    
     
 }
 
+// MARK: - AuthenticationControllerProtocol
 extension LoginController: AuthenticationControllerProtocol {
     
     func checkFormStatus() {
@@ -182,4 +187,5 @@ extension LoginController: AuthenticationControllerProtocol {
             loginButton.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
         }
     }
+    
 }

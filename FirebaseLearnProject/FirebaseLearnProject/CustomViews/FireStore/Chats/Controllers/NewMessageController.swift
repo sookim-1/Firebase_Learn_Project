@@ -49,9 +49,8 @@ final class NewMessageController: UITableViewController {
     }
 
     private func configureUI() {
-        
-        configureNavigationBar(withTitle: "New message", prefersLargeTitles: false)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(handleDismiss))
+        configureNavigationBar(withTitle: "새로운 채팅", prefersLargeTitles: false)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(handleDismiss))
         
         tableView.tableFooterView = UIView()
         tableView.register(UserCell.self, forCellReuseIdentifier: UserCell.reuseID)
@@ -64,12 +63,13 @@ final class NewMessageController: UITableViewController {
         navigationItem.searchController = searchController
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.placeholder = "Search user..."
+        searchController.searchBar.placeholder = "친구 찾기"
+
         definesPresentationContext = false
         
         if let textField = searchController.searchBar.value(forKey: "searchField") as? UITextField {
             textField.textColor = .systemPurple
-            textField.backgroundColor = .white
+            textField.backgroundColor = .black
         }
     }
 }

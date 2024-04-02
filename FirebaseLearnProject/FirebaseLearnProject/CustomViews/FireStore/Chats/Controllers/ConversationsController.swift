@@ -6,7 +6,6 @@
 //
 
 import UIKit
-
 import FirebaseCore
 import FirebaseAuth
 import SnapKit
@@ -30,12 +29,15 @@ final class ConversationsController: UIViewController {
         $0.setImage(UIImage(systemName: "plus"), for: .normal)
         $0.backgroundColor = .systemPurple
         $0.tintColor = .white
+        $0.layer.cornerRadius = 25
         $0.addTarget(self, action: #selector(showNewMessage), for: .touchUpInside)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        addSubviews()
+        setupConstraints()
         configureUI()
         authenticateUser()
         fetchConversations()
@@ -44,7 +46,7 @@ final class ConversationsController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        configureNavigationBar(withTitle: "Messages", prefersLargeTitles: true)
+        configureNavigationBar(withTitle: "채팅", prefersLargeTitles: true)
     }
 
     @objc func showProfile() {
@@ -99,9 +101,7 @@ final class ConversationsController: UIViewController {
             print("DEBUG: Error signing out...", error.localizedDescription)
         }
     }
-    
-    //MARK: - Helpers
-    
+
     private func presentLoginScreen() {
         DispatchQueue.main.async {
             let controller = LoginController()
@@ -112,32 +112,34 @@ final class ConversationsController: UIViewController {
         }
     }
     
+    private func addSubviews() {
+        [newMessageButton,
+         tableView].forEach {
+            self.view.addSubview($0)
+        }
+    }
+    
+    private func setupConstraints() {
+        tableView.frame = self.view.frame
+        
+        newMessageButton.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            make.trailing.equalToSuperview().offset(-24)
+            make.width.equalTo(50)
+            make.height.equalTo(50)
+        }
+        
+        self.view.bringSubviewToFront(self.newMessageButton)
+    }
+    
     private func configureUI() {
         view.backgroundColor = .white
-    
-        configureTableView()
 
         let image = UIImage(systemName: "person.circle.fill")
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: image,
                                                            style: .plain,
                                                            target: self,
                                                            action: #selector(showProfile))
-        
-        view.addSubview(newMessageButton)
-        newMessageButton.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                                right: view.rightAnchor,
-                                paddingBottom: 16,
-                                paddingRight: 24,
-                                width: 50,
-                                height: 50)
-        newMessageButton.layer.cornerRadius = 25
-        
-    }
-    
-    private func configureTableView() {
-        view.addSubview(tableView)
-        
-        tableView.frame = view.frame
     }
     
     private func showChatController(forUser user: User) {

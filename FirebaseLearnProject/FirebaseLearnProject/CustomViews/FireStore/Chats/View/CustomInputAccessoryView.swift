@@ -23,14 +23,14 @@ final class CustomInputAccessoryView: UIView {
     }
     
     private lazy var sendButton = UIButton(type: .system).then {
-        $0.setTitle("Send", for: .normal)
+        $0.setTitle("전송", for: .normal)
         $0.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         $0.setTitleColor(.systemPurple, for: .normal)
         $0.addTarget(self, action: #selector(handleSendMessage), for: .touchUpInside)
     }
     
     lazy private var placeholderLabel = UILabel().then {
-        $0.text = "Enter message..."
+        $0.text = "메시지를 입력하세요"
         $0.font = UIFont.systemFont(ofSize: 16)
         $0.textColor = .lightGray
     }
@@ -75,7 +75,7 @@ final class CustomInputAccessoryView: UIView {
             make.top.equalToSuperview().offset(4)
             make.trailing.equalToSuperview().offset(-8)
             make.width.equalTo(50)
-            make.trailing.equalTo(50)
+            make.height.equalTo(50)
         }
 
         messageInputTextView.snp.makeConstraints { make in

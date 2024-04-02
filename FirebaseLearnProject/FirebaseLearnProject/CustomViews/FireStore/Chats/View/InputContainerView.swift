@@ -52,6 +52,7 @@ final class InputContainerView: UIView {
         dividerView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(8)
             make.trailing.equalToSuperview().offset(-8)
+            make.bottom.equalToSuperview()
             make.height.equalTo(0.75)
         }
     }

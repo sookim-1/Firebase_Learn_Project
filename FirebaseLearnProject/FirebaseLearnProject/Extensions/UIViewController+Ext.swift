@@ -20,7 +20,7 @@ extension UIViewController {
         gradient.frame = view.frame
     }
 
-    func showLoader(_ show: Bool, withText text: String? = "Loading..") {
+    func showLoader(_ show: Bool, withText text: String? = "로딩 중..") {
         view.endEditing(true)
         UIViewController.hud.textLabel.text = text
 
@@ -47,7 +47,7 @@ extension UIViewController {
 
     func showError(_ message: String) {
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: "확인", style: .cancel, handler: nil))
 
         present(alertController, animated: true)
     }

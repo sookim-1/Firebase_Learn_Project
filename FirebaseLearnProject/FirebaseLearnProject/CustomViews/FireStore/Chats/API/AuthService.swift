@@ -5,11 +5,10 @@
 //  Created by sookim on 4/2/24.
 //
 
+import UIKit
 import FirebaseAuth
 import FirebaseFirestore
- 
 import FirebaseStorage
-import UIKit
 
 struct RegistrationCredentials {
     let email: String
@@ -28,7 +27,9 @@ struct AuthService {
     }
     
     func createUser(credentials: RegistrationCredentials, completion: ((Error?) -> Void)?) {
-        guard let imageData = credentials.profileImage.jpegData(compressionQuality: 0.3) else { return }
+        guard let imageData = credentials.profileImage.jpegData(compressionQuality: 0.3) 
+        else { return }
+        
         // get unique identifier for each photo
         let filename = UUID().uuidString
         let storageRef = Storage.storage().reference(withPath: "/profile_images/\(filename)")
@@ -40,7 +41,8 @@ struct AuthService {
             }
             
             storageRef.downloadURL { (url, error) in
-                guard let profileImageUrl = url?.absoluteString else { return }
+                guard let profileImageUrl = url?.absoluteString 
+                else { return }
                 
                 // Create user
                 Auth.auth().createUser(withEmail: credentials.email, password: credentials.password) { (result, error) in
@@ -50,7 +52,8 @@ struct AuthService {
                     }
                     
                     // get user id
-                    guard let uid = result?.user.uid else { return }
+                    guard let uid = result?.user.uid 
+                    else { return }
                     
                     let data = ["email": credentials.email,
                                 "fullname": credentials.fullname,
