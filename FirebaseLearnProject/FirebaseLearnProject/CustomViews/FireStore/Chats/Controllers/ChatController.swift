@@ -55,8 +55,15 @@ final class ChatController: UICollectionViewController {
             self.messages = messages
             self.collectionView.reloadData()
             // scroll down at the bottom of collectionView every time when fetchMessages
+            /*
+             // scrollToItem을 하면 하단 Footer영역까지 scroll이 되지 않는 이슈
             self.collectionView.scrollToItem(at: [0, self.messages.count - 1],
                                              at: .bottom, animated: true)
+            */
+            collectionView.scrollToSupplementaryView(ofKind: "UICollectionElementKindSectionFooter",
+at: IndexPath(item: self.messages.count - 1, section: 0),
+                                                     at: .bottom,
+animated: false)
         }
     }
 

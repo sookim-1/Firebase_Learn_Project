@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7605A6052B58DF7E002DD2C3 /* FirebaseUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7605A6042B58DF7E002DD2C3 /* FirebaseUtility.swift */; };
 		7605A60A2B58E2B1002DD2C3 /* CrashlyticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7605A6092B58E2B1002DD2C3 /* CrashlyticsViewController.swift */; };
+		760F73162BC3AF980063B535 /* UICollectionView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760F73152BC3AF980063B535 /* UICollectionView+Ext.swift */; };
 		761D2B1D2BBBBCFB0038FFE4 /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761D2B1C2BBBBCFB0038FFE4 /* UIViewController+Ext.swift */; };
 		761D2B242BBBBDF00038FFE4 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 761D2B232BBBBDF00038FFE4 /* Kingfisher */; };
 		761D2B272BBBBE0C0038FFE4 /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 761D2B262BBBBE0C0038FFE4 /* JGProgressHUD */; };
@@ -115,6 +116,7 @@
 /* Begin PBXFileReference section */
 		7605A6042B58DF7E002DD2C3 /* FirebaseUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUtility.swift; sourceTree = "<group>"; };
 		7605A6092B58E2B1002DD2C3 /* CrashlyticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashlyticsViewController.swift; sourceTree = "<group>"; };
+		760F73152BC3AF980063B535 /* UICollectionView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Ext.swift"; sourceTree = "<group>"; };
 		761D2B1C2BBBBCFB0038FFE4 /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
 		761D2B302BBBEB930038FFE4 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		761D2B312BBBEB930038FFE4 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -361,6 +363,7 @@
 				7630903D2BBABD8C0081A9EF /* UITextView+Ext.swift */,
 				763090412BBB93EE0081A9EF /* UIScrollView+Ext.swift */,
 				761D2B1C2BBBBCFB0038FFE4 /* UIViewController+Ext.swift */,
+				760F73152BC3AF980063B535 /* UICollectionView+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -683,6 +686,7 @@
 				7605A60A2B58E2B1002DD2C3 /* CrashlyticsViewController.swift in Sources */,
 				764B9F212B4E620C00697C58 /* LocalPushViewController.swift in Sources */,
 				761D2B652BBBEB950038FFE4 /* MessageCell.swift in Sources */,
+				760F73162BC3AF980063B535 /* UICollectionView+Ext.swift in Sources */,
 				764B9EBE2B4E5C1E00697C58 /* AppDelegate.swift in Sources */,
 				7630903E2BBABD8C0081A9EF /* UITextView+Ext.swift in Sources */,
 				761D2B5A2BBBEB950038FFE4 /* AuthService.swift in Sources */,
